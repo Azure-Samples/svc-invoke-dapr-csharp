@@ -1,0 +1,15 @@
+name: service-invoke-dapr-dotnet-aca
+metadata:
+  template: service-invoke-dapr-dotnet-aca@0.0.1-beta
+services:
+  worker:
+    project: checkout
+    language: csharp
+    host: containerapp
+    module: app/worker
+  api:
+    project: order-processor
+    language: csharp
+    host: containerapp
+    module: app/api
+ 
