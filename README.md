@@ -18,7 +18,7 @@ dotnet restore
 dotnet build
 ```
 
-3. Run the order-processor service (callee) service with Dapr: 
+3. Run the order-processor service (callee) with Dapr: 
 
 ```bash
 dapr run --app-port 7001 --app-id order-processor --app-protocol http --dapr-http-port 3501 -- dotnet run
@@ -34,7 +34,7 @@ dotnet restore
 dotnet build
 ```
 
-3. Run the checkout service (callee) service with Dapr: 
+3. Run the checkout service (callee) with Dapr: 
 
 ```bash
 dapr run  --app-id checkout --app-protocol http --dapr-http-port 3500 -- dotnet run
