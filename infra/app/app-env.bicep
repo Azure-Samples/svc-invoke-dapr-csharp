@@ -2,6 +2,8 @@ param containerAppsEnvName string
 param containerRegistryName string
 param location string
 param logAnalyticsWorkspaceName string
+param applicationInsightsName string
+param daprEnabled bool = false
 
 // Container apps host (including container registry)
 module containerApps '../core/host/container-apps.bicep' = {
@@ -12,6 +14,8 @@ module containerApps '../core/host/container-apps.bicep' = {
     containerRegistryName: containerRegistryName
     location: location
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+    applicationInsightsName: applicationInsightsName
+    daprEnabled: daprEnabled
   }
 }
 

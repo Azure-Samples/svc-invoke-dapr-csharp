@@ -19,6 +19,9 @@
       },
       "containerRegistryName": {
         "value": "${AZURE_CONTAINER_REGISTRY_NAME}"
+      },
+      "managedIdentityName": {
+        "value": "${AZURE_MANAGED_IDENTITY_NAME}"
       }
     }
   }
