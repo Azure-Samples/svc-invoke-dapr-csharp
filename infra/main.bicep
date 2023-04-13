@@ -74,9 +74,6 @@ module worker './app/worker.bicep' = {
     serviceName: workerServiceName
     managedIdentityName: security.outputs.managedIdentityName
   }
-  dependsOn: [
-    security
-  ]
 }
 
 // API
@@ -92,10 +89,6 @@ module api './app/api.bicep' = {
     serviceName: apiServiceName
     managedIdentityName: security.outputs.managedIdentityName
   }
-  dependsOn:[
-    security
-    worker
-  ]
 }
 
 // Monitor application with Azure Monitor
