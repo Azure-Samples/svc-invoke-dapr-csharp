@@ -8,7 +8,7 @@ param imageName string = ''
 param serviceName string = 'checkout'
 param managedIdentityName string = ''
 
-module app '../core/host/container-app.bicep' = {
+module app '../core/host/container-app-worker.bicep' = {
   name: '${serviceName}-container-app-module'
   params: {
     name: name
