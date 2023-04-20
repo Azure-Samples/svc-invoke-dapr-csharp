@@ -8,9 +8,10 @@ param containerRegistryName string = ''
 param env array = []
 param imageName string
 param keyVaultName string = ''
-param managedIdentity bool = !empty(keyVaultName)
+param managedIdentityEnabled bool = !empty(keyVaultName)
+param managedIdentityName string = ''
 
-param isDaprEnabled bool = false
+param daprEnabled bool = false
 param daprApp string = containerName
 param daprAppProtocol string = 'http'
 
@@ -24,7 +25,12 @@ resource app 'Microsoft.App/containerApps@2022-03-01' = {
   name: name
   location: location
   tags: tags
-  identity: { type: managedIdentity ? 'SystemAssigned' : 'None' }
+  identity: managedIdentityEnabled ? {
+    type: 'SystemAssigned,UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}' : {}
+    }
+  } : { type: 'None' }
   properties: {
     managedEnvironmentId: containerAppsEnvironment.id
     configuration: {
@@ -36,7 +42,7 @@ resource app 'Microsoft.App/containerApps@2022-03-01' = {
         }
       ]
       dapr: {
-        enabled: isDaprEnabled
+        enabled: daprEnabled
         appId: daprApp
         appProtocol: daprAppProtocol
       }
@@ -62,8 +68,8 @@ resource app 'Microsoft.App/containerApps@2022-03-01' = {
       ]
       scale: {
         minReplicas: 1
-        maxReplicas: 10
-      } 
+        maxReplicas: 1
+      }
     }
   }
 }
@@ -77,6 +83,11 @@ resource containerRegistry 'Microsoft.ContainerRegistry/registries@2022-02-01-pr
   name: containerRegistryName
 }
 
-output identityPrincipalId string = managedIdentity ? app.identity.principalId : ''
+// user assigned managed identity to use throughout
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' existing = {
+  name: managedIdentityName
+}
+
+output identityPrincipalId string = managedIdentityEnabled ? app.identity.principalId : ''
 output imageName string = imageName
 output name string = app.name
