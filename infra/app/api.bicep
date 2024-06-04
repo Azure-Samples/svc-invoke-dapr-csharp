@@ -22,8 +22,7 @@ module app '../core/host/container-app.bicep' = {
     daprEnabled: true
     containerName: serviceName
     targetPort: 7001
-    managedIdentityEnabled: true
-    managedIdentityName: managedIdentityName
+    identityName: managedIdentityName
   }
 }
 
