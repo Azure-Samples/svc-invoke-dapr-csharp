@@ -23,6 +23,7 @@ module app '../core/host/container-app.bicep' = {
     containerName: serviceName
     targetPort: 7001
     identityName: managedIdentityName
+    identityType: 'UserAssigned'
   }
 }
 
