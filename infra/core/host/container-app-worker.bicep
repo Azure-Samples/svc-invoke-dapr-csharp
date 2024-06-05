@@ -25,7 +25,7 @@ param identityType string = 'None'
 var usePrivateRegistry = !empty(managedIdentityName) && !empty(containerRegistryName)
 
 // Automatically set to `UserAssigned` when an `identityName` has been set
-var normalizedIdentityType = !empty(managedIdentityName) ? 'UserAssigned' : identityType
+// var normalizedIdentityType = !empty(managedIdentityName) ? 'UserAssigned' : identityType
 
 
 @description('CPU cores allocated to a single container instance, e.g. 0.5')
@@ -48,19 +48,13 @@ resource app 'Microsoft.App/containerApps@2023-05-02-preview' = {
   // provide the system assigned identity with the ACR pull access before the app is created
   dependsOn: usePrivateRegistry ? [ containerRegistryAccess ] : []
   identity: {
-    type: normalizedIdentityType
-    userAssignedIdentities: !empty(managedIdentityName) && normalizedIdentityType == 'UserAssigned' ? { '${managedIdentity.id}': {} } : null
+    type: 'UserAssigned'
+    userAssignedIdentities: !empty(managedIdentityName) ? { '${managedIdentity.id}': {} } : null
   } 
   properties: {
     managedEnvironmentId: containerAppsEnvironment.id
     configuration: {
       activeRevisionsMode: 'Single'
-      // secrets: [
-      //   {
-      //     name: 'registry-password'
-      //     value: containerRegistry.listCredentials().passwords[0].value
-      //   }
-      // ]
       dapr: {
         enabled: daprEnabled
         appId: daprApp
@@ -69,9 +63,7 @@ resource app 'Microsoft.App/containerApps@2023-05-02-preview' = {
       registries: [
         {
           server: '${containerRegistry.name}.azurecr.io'
-          // username: containerRegistry.name
           identity: managedIdentity.id
-          // passwordSecretRef: 'registry-password'
         }
       ]
     }
@@ -110,6 +102,6 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-
 }
 
 //output identityPrincipalId string = managedIdentityEnabled ? app.identity.principalId : ''
-output identityPrincipalId string = normalizedIdentityType == 'None' ? '' : (empty(managedIdentityName) ? app.identity.principalId : managedIdentity.properties.principalId)
+output identityPrincipalId string = empty(managedIdentityName) ? app.identity.principalId : managedIdentity.properties.principalId
 output imageName string = imageName
 output name string = app.name

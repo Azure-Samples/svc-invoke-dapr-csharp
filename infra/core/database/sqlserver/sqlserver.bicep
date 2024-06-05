@@ -26,6 +26,19 @@ resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
     administratorLoginPassword: sqlAdminPassword
   }
 
+  resource advanceThreadProtection 'advancedThreatProtectionSettings' = {
+    name: 'advancedThreatProtection'
+    properties: {
+      state: 'Enabled'
+    }
+  }
+
+  resource Auditing 'auditingSettings' = {
+    name: 'auditing'
+    properties: {
+      state: 'Enabled'    
+  }
+
   resource database 'databases' = {
     name: databaseName
     location: location
