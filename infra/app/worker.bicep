@@ -21,6 +21,7 @@ module app '../core/host/container-app-worker.bicep' = {
     containerName: serviceName
     managedIdentityName: managedIdentityName
     managedIdentityEnabled: true
+    identityType: 'UserAssigned'
   }
 }
 
