@@ -14,6 +14,7 @@ param logAnalyticsWorkspaceName string
 
 @description('Name of the Vnet')
 param vnetName string
+param vnetInternal bool = true
 
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: name
@@ -30,6 +31,7 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01'
     daprAIInstrumentationKey: daprEnabled && !empty(applicationInsightsName) ? applicationInsights.properties.InstrumentationKey : ''
     vnetConfiguration: {
       infrastructureSubnetId: vnet.properties.subnets[0].id
+      internal: vnetInternal
     }
   }
 }

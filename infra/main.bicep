@@ -40,6 +40,7 @@ var abbrs = loadJsonContent('./abbreviations.json')
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
 var tags = { 'azd-env-name': environmentName }
 param vnetName string = 'vnet-ca'
+param vnetInternal bool = true
 param vnetPrefix string = '10.0.0.0/16'
 
 // Organize resources in a resource group
@@ -61,6 +62,7 @@ module appEnv './app/app-env.bicep' = {
     applicationInsightsName: monitoring.outputs.applicationInsightsName
     daprEnabled: true
     vnetName: vnet.outputs.vnetName
+    vnetInernal: vnetInternal 
   }
 }
 
