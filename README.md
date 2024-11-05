@@ -1,3 +1,4 @@
+<!--
 ---
 page_type: sample
 languages:
@@ -11,6 +12,7 @@ urlFragment: svc-invoke-dapr-csharp
 name: Microservice communication using Dapr's Service Invocation API (C#)
 description: Create two microservices with C# that communicate using Dapr's Service Invocation API. The Service Invocation API enables your applications to communicate reliably and securely by leveraging auto-mTLS and built-in retries
 ---
+-->
 <!-- YAML front-matter schema: https://review.learn.microsoft.com/en-us/help/contribute/samples/process/onboarding?branch=main#supported-metadata-fields-for-readmemd -->
 
 # Microservice communication using service invoke (sync)
